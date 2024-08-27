@@ -1,0 +1,14 @@
+{
+  "verbose": false,
+  "watch": [
+    "./**/*.*",
+    "package.json"
+  ],
+  "ignore": [
+    "node_modules/*",
+    "test/*",
+    "*.log"
+  ],
+  "ext": "js,ts,json",
+  "exec": "npx tsx index.ts"
+}

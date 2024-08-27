@@ -1,0 +1,33 @@
+{
+  // See https://github.com/tsconfig/bases#node-18
+  "extends": "@tsconfig/node18/tsconfig.json",
+
+  // Most ts-node options can be specified here using their programmatic names.
+  "ts-node": {
+    // It is faster to skip typechecking.
+    // Remove if you want ts-node to do typechecking.
+    "transpileOnly": true,
+
+    "files": true,
+
+    "compilerOptions": {
+      // compilerOptions specified here will override those declared below,
+      // but *only* in ts-node.  Useful if you want ts-node and tsc to use
+      // different options with a single tsconfig.json.
+    }
+  },
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
+    "resolveJsonModule": true,
+    "noImplicitAny": false,
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
+    "esModuleInterop": true
+    // typescript options here
+  }
+}
