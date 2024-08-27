@@ -14,7 +14,7 @@ import { _2CAPTCHA_API_KEY } from "@/lib/env";
 import { Db } from "@/lib/db";
 import { getShortString } from "@/helpers/utils";
 
-const solver = new Solver(_2CAPTCHA_API_KEY);
+const solver = new Solver(_2CAPTCHA_API_KEY || "");
 
 chromium.use(stealth());
 

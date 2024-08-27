@@ -12,14 +12,13 @@ Modules included:
 **More modules will be added soon, join [Discord](https://discord.gg/tKbHweDkeY) to stay updated.**
 
 
-## Usage
-Requirements: 
+## Requirements
 1. Node.js >=18.17.1, install with [guide](https://nodejs.org/en/download/package-manager)
 2. yarn >=1.22.19, install with `npm install --global yarn`
 3. playwright >=1.46.1, install with `npx playwright install` (might require to install some system dependencies, follow the guide)
 4. Npm packages, install with `yarn install`
 
-### Quick Start
+## Fractal Guide
 1. Create a `.env` file in the root directory.
 2. Add the following environment variables:
 ```
@@ -48,8 +47,10 @@ export const GLOBAL_CONFIG = {
 };
 ```
 4. `yarn start` to run the CLI toolkit.
-
-
+6. Generate wallets in `Wallets -> Generate` menu.
+7. Attach your proxies to wallets in `Wallets -> Proxy` menu. It requires to create `proxy.txt` file with proxies in format `ip:port:user:pass`
+8. Go to `Fractal -> Claim testnet tokens` menu to claim the Fractal Testnet tokens. You can select wallets and delay between claims.
+9. Go to `Fractal -> Mint testnet BRC20 tokens` menu to mint BRC-20 tokens. You can select wallets and delay between mints.
 
 ### Database
 All your data is stored in `db.json` file. Make backup of this file to avoid losing your seeds and other data.
