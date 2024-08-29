@@ -1,8 +1,8 @@
 import { logger } from "@/lib/logger";
 import _ from "lodash";
 
-export const sleep = (ms: number) => {
-  logger.info(`Sleeping for ${ms / 1000} seconds`);
+export const sleep = (ms: number, msg = `Sleeping for {}`) => {
+  logger.info(msg.replace("{}", `${ms / 1000} seconds`));
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
@@ -35,3 +35,20 @@ export const shuffle = <T>(arr: T[]): T[] => _.shuffle([...arr]);
 
 export const getRandomNumberBetween = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1) + min);
+
+export const getDelaySet = (
+  length: number,
+  minDelay: number,
+  maxDelay: number
+) =>
+  [
+    0,
+    ...Array.from(
+      { length: length - 1 },
+      () => Math.floor(Math.random() * (maxDelay - minDelay + 1)) + minDelay
+    ),
+  ].map((delay, i, arr) => {
+    const newDelay = delay + (arr[i - 1] || 0);
+    arr[i] = newDelay;
+    return newDelay;
+  });

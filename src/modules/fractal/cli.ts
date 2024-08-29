@@ -8,6 +8,7 @@ import { claimFractal } from "@/modules/fractal/methods/claim";
 import { logger } from "@/lib/logger";
 import { dayjs } from "@/lib/dayjs";
 import {
+  getDelaySet,
   getRandomNumberBetween,
   getShortString,
   retry,
@@ -96,36 +97,55 @@ export const fractalCli: Choice<CliMethod>[] = [
       });
 
       const { min: minDelay, max: maxDelay } = await getDelays();
+      const delaySet = getDelaySet(
+        wallets.length,
+        minDelay * 1000,
+        maxDelay * 1000
+      );
 
+      logger.info("Select delay between transactions and wallets:");
       logger.info(`Minting Fractal BRC20 for ${wallets.length} wallets`);
 
-      await eachOfSeries(shuffle(wallets), async (wallet) => {
-        await eachOfSeries(
-          shuffle(GLOBAL_CONFIG.fractal.mint),
-          async (mint) => {
-            await retry(
-              () =>
-                mintFractal({
-                  wallet,
-                  count: getRandomNumberBetween(mint.repeat[0], mint.repeat[1]),
-                  ticker: mint.tick,
-                }),
-              3
-            ).catch((e) => {
-              logger.error(
-                `Could not mint BRC for ${getShortString(
-                  wallet.addresses.bitcoin
-                )}`,
-                e
-              );
-            });
+      await Promise.all(
+        shuffle(wallets).map(async (wallet, i) => {
+          await sleep(
+            delaySet[i],
+            `${getShortString(
+              wallet.addresses.bitcoin
+            )} will start minting in {}`
+          );
 
-            await sleep(
-              getRandomNumberBetween(minDelay * 1000, maxDelay * 1000)
-            );
-          }
-        );
-      });
+          await eachOfSeries(
+            shuffle(GLOBAL_CONFIG.fractal.mint),
+            async (mint) => {
+              await retry(
+                () =>
+                  mintFractal({
+                    wallet,
+                    count: getRandomNumberBetween(
+                      mint.repeat[0],
+                      mint.repeat[1]
+                    ),
+                    ticker: mint.tick,
+                  }),
+                3
+              ).catch((e) => {
+                logger.error(
+                  `Could not mint BRC for ${getShortString(
+                    wallet.addresses.bitcoin
+                  )}`,
+                  e
+                );
+              });
+
+              await sleep(
+                getRandomNumberBetween(minDelay * 1000, maxDelay * 1000),
+                `${getShortString(wallet.addresses.bitcoin)} skeeping for {}`
+              );
+            }
+          );
+        })
+      );
 
       return cli.homescreen();
     },

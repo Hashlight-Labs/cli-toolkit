@@ -32,7 +32,10 @@ export const mintFractal = async ({
     Number(brc20Data.data.max) - Number(brc20Data.data.limit) >=
     Number(brc20Data.data.minted);
 
-  if (!canMint) throw new Error(`Reached limit for mint ${ticker}`);
+  if (!canMint)
+    throw new Error(
+      `Reached limit for mint ${ticker}: ${brc20Data.data.minted}/${brc20Data.data.max} minted. Remove it from your config to hide this error.`
+    );
 
   const feeRate = await FractalApi.getFeeRate();
   const mint = await FractalApi.createBrc20Mint({

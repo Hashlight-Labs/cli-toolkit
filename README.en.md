@@ -21,6 +21,7 @@ This is a CLI toolkit for different kinds of blockchain automation. You can run 
 3. yarn >=1.22.19, install with `npm install --global yarn`
 4. playwright >=1.46.1, install with `npx playwright install` (might require to install some system dependencies, follow the guide)
 5. Npm packages, install with `yarn install`
+6. To update — `git stash -u && git pull` (local changes might be lost, like `config.ts`, so keep backups)
 
 ### Database
 All your data is stored in `db.json` file. Make backup of this file to avoid losing your seeds and other data.
