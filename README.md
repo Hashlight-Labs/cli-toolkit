@@ -10,7 +10,7 @@
 
 ## Модули
 - Генерация и управление кошельками и прокси
-- Модуль на клейм и минт Fractal Testnet — [гайд](/guides/fractal_ru.md)
+- Модуль на клейм и минт Fractal Testnet — [гайд](/guides/fractal.ru.md)
 
 ## Скрипты
 - [Клейм на Elixir](/src/scripts/elixirClaim.ts)

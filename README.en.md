@@ -1,7 +1,7 @@
 # Hashlight CLI Toolkit
 [Website](https://hashlight.xyz/) | [Discord](https://discord.gg/tKbHweDkeY) | [Twitter](https://x.com/hashlight) | [Blog](https://teletype.in/@hashlight)
 
-> Перейти к [🇷🇺 русской версии](/README.ru.md) документации.
+> 🇷🇺 Перейти к [русской версии](/README.ru.md) документации.
 
 **💰 For more software, help with setup and useful info join our [Discord](https://discord.gg/tKbHweDkeY) 💰**
 
@@ -10,7 +10,7 @@ This is a CLI toolkit for different kinds of blockchain automation. You can run 
 
 ## Modules
 - Wallet & proxy management
-- Fractal Testnet Claim & Mint — [guide](/guides/fractal_en.md)
+- Fractal Testnet Claim & Mint — [guide](/guides/fractal.en.md)
 
 ## Scripts
 - [Elixir Claim](/src/scripts/elixirClaim.ts)
