@@ -2,11 +2,11 @@ export const GLOBAL_CONFIG = {
   fractal: {
     mint: [
       {
-        tick: "pepeoe", // ticker
-        repeat: [1, 2], // min/max repeat mint
+        tick: "FBmeme",
+        repeat: [1, 2],
       },
       {
-        tick: "pizzapp",
+        tick: "brc20_pizza",
         repeat: [1, 2],
       },
     ],

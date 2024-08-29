@@ -11,46 +11,18 @@ Modules included:
 
 **More modules will be added soon, join [Discord](https://discord.gg/tKbHweDkeY) to stay updated.**
 
+## Modules
+- Wallet & proxy management
+- Fractal Testnet Claim & Mint — [EN Guide](/guides/fractal_en.md) / [РУ Гайд](/guides/fractal_ru.md)
+
+## Scripts
+- [Elixir Claim](/src/scripts/elixirClaim.ts)
 
 ## Requirements
 1. Node.js >=18.17.1, install with [guide](https://nodejs.org/en/download/package-manager)
 2. yarn >=1.22.19, install with `npm install --global yarn`
 3. playwright >=1.46.1, install with `npx playwright install` (might require to install some system dependencies, follow the guide)
 4. Npm packages, install with `yarn install`
-
-## Fractal Guide
-1. Create a `.env` file in the root directory.
-2. Add the following environment variables:
-```
-2CAPTCHA_API_KEY=... 
-UNISAT_FRACTAL_API_TOKEN=...
-```
-You can obtain `2CAPTCHA_API_KEY` from [developer dashboard](https://developer.unisat.io/account/login) and `UNISAT_FRACTAL_API_TOKEN` from [2captcha](https://2captcha.com/enterpage).
-
-> 2captcha is required to solve captchas for the Fractal Testnet claim module. It's not required for other modules.
-3. Update `src/config.ts` with your wallet configuration.
-```ts
-// This config will mint 1-2 NFTs for each ticker in random order for each wallet you select
-export const GLOBAL_CONFIG = {
-  fractal: {
-    mint: [
-      {
-        tick: "pepeoe", // ticker
-        repeat: [1, 2], // min/max repeat mint
-      },
-      {
-        tick: "pizzapp",
-        repeat: [1, 2],
-      },
-    ],
-  },
-};
-```
-4. `yarn start` to run the CLI toolkit.
-6. Generate wallets in `Wallets -> Generate` menu.
-7. Attach your proxies to wallets in `Wallets -> Proxy` menu. It requires to create `proxy.txt` file with proxies in format `ip:port:user:pass`
-8. Go to `Fractal -> Claim testnet tokens` menu to claim the Fractal Testnet tokens. You can select wallets and delay between claims.
-9. Go to `Fractal -> Mint testnet BRC20 tokens` menu to mint BRC-20 tokens. You can select wallets and delay between mints.
 
 ### Database
 All your data is stored in `db.json` file. Make backup of this file to avoid losing your seeds and other data.

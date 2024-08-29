@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { Db, db } from "@/lib/db";
 import { cli } from "../../cli";
 import { CliMethod } from "../../types/cli";
 import { Choice } from "../../types/inquirer";
@@ -19,6 +19,7 @@ import { mintFractal } from "@/modules/fractal/methods/inscribe";
 import { GLOBAL_CONFIG } from "@/config";
 import { drawFractalMintConfig } from "@/stats/fractalMintConfig";
 import chalk from "chalk";
+import { satsToBtc } from "@/helpers/bitcoin";
 
 export const fractalCli: Choice<CliMethod>[] = [
   {
@@ -39,10 +40,18 @@ export const fractalCli: Choice<CliMethod>[] = [
                 )
               : "";
 
+          const balanceMsg = wallet.balances?.[Db.Network.FractalTestnet]
+            ? chalk.yellow(
+                ` ${satsToBtc(
+                  wallet.balances?.[Db.Network.FractalTestnet]
+                )} tFB `
+              )
+            : "";
+
           return {
             name: `[${i + 1}] ${getShortString(
               wallet.addresses.bitcoin
-            )}${nextClaimMsg}`,
+            )}${balanceMsg}${nextClaimMsg}`,
             value: wallet,
           };
         }),
