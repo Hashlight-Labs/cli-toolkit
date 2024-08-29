@@ -1,7 +1,7 @@
 # Hashlight CLI Toolkit
 [Website](https://hashlight.xyz/) | [Discord](https://discord.gg/tKbHweDkeY) | [Twitter](https://x.com/hashlight) | [Blog](https://teletype.in/@hashlight)
 
-> 🇷🇺 Перейти к [русской версии](/README.ru.md) документации.
+> 🇷🇺 Перейти к [русской версии](/README.md) документации.
 
 **💰 For more software, help with setup and useful info join our [Discord](https://discord.gg/tKbHweDkeY) 💰**
 
