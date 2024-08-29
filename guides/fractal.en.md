@@ -1,6 +1,8 @@
 # Hashlight CLI Fractal Module
 [Website](https://hashlight.xyz/) | [Discord](https://discord.gg/tKbHweDkeY) | [Twitter](https://x.com/hashlight) | [Blog](https://teletype.in/@hashlight)
 
+**💰 For more software, help with setup and useful info join our [Discord](https://discord.gg/tKbHweDkeY) 💰**
+
 ## Guide
 1. Create a `.env` file in the root directory.
 2. Add the following environment variables:
@@ -34,5 +36,3 @@ export const GLOBAL_CONFIG = {
 7. Attach your proxies to wallets in `Wallets -> Proxy` menu. It requires to create `proxy.txt` file with proxies in format `ip:port:user:pass`
 8. Go to `Fractal -> Claim testnet tokens` menu to claim the Fractal Testnet tokens. You can select wallets and delay between claims.
 9. Go to `Fractal -> Mint testnet BRC20 tokens` menu to mint BRC-20 tokens. You can select wallets and delay between mints.
-
-**For more software, help with setup and useful info join our [Discord](https://discord.gg/tKbHweDkeY)**

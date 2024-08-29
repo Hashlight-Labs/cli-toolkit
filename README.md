@@ -1,31 +1,28 @@
 # Hashlight CLI Toolkit
-[Website](https://hashlight.xyz/) | [Discord](https://discord.gg/tKbHweDkeY) | [Twitter](https://x.com/hashlight) | [Blog](https://teletype.in/@hashlight)
+[Сайт](https://hashlight.xyz/) | [Discord](https://discord.gg/tKbHweDkeY) | [Личный ТГ](https://teletype.in/@hashlight) | [Twitter](https://x.com/hashlight) 
 
-## About
-This is a CLI toolkit for different kinds of blockchain automation. You can run it locally or on a server.
+> 🇬🇧 See the [English version](/README.en.md) of this document.
 
-Modules included:
-1. Wallet creation and management
-2. Proxy management
-3. Fractal Testnet claim and BRC-20 minting
+**💰 Больше софта, помощь по настройке и полезную инфу можно найти у нас в [Discord](https://discord.gg/tKbHweDkeY) 💰**
 
-**More modules will be added soon, join [Discord](https://discord.gg/tKbHweDkeY) to stay updated.**
+## О софте
+Это CLI-инструмент для автоматизации различных задач в блокчейне. Можно ранить локально и на сервере.
 
-## Modules
-- Wallet & proxy management
-- Fractal Testnet Claim & Mint — [EN Guide](/guides/fractal_en.md) / [РУ Гайд](/guides/fractal_ru.md)
+## Модули
+- Генерация и управление кошельками и прокси
+- Модуль на клейм и минт Fractal Testnet — [гайд](/guides/fractal_ru.md)
 
-## Scripts
-- [Elixir Claim](/src/scripts/elixirClaim.ts)
+## Скрипты
+- [Клейм на Elixir](/src/scripts/elixirClaim.ts)
 
-## Requirements
-1. Node.js >=18.17.1, install with [guide](https://nodejs.org/en/download/package-manager)
-2. yarn >=1.22.19, install with `npm install --global yarn`
-3. playwright >=1.46.1, install with `npx playwright install` (might require to install some system dependencies, follow the guide)
-4. Npm packages, install with `yarn install`
+## Требования
+1. Node.js >=18.17.1, установка по [гайду](https://nodejs.org/en/download/package-manager)
+2. yarn >=1.22.19, установка через `npm install --global yarn`
+3. playwright >=1.46.1, установка через `npx playwright install` (может потребовать установки системных зависимостей, следуйте подсказкам)
+4. Зависимости проекта, установка через `yarn install`
 
-### Database
-All your data is stored in `db.json` file. Make backup of this file to avoid losing your seeds and other data.
+### База данных
+Все данные хранятся в файле `db.json`. Делай бэкап этого файла, чтобы не потерять свои сидки и остальное.
 
-
-
+### Логи
+Логи хранятся в `history.log`. При возникновении проблем смотри сюда или пиши в [Discord](https://discord.gg/tKbHweDkeY).
