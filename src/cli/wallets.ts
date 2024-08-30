@@ -1,5 +1,9 @@
 import { cli } from "@/cli";
-import { mnemonicToPrivateKey, privateKeyToAddress } from "@/helpers/bitcoin";
+import {
+  getBitcoinKeypair,
+  mnemonicToPrivateKey,
+  privateKeyToAddress,
+} from "@/helpers/bitcoin";
 import { db } from "@/lib/db";
 import { logger } from "@/lib/logger";
 import { drawBitcoinTable } from "@/stats/bitcoin";
@@ -35,6 +39,9 @@ export const walletsCli = [
               mnemonicToPrivateKey(mnemonic)
             ) as string,
           },
+          privateKeyOverrides: {
+            bitcoin: mnemonicToPrivateKey(mnemonic),
+          },
         });
       });
 
@@ -51,6 +58,7 @@ export const walletsCli = [
   {
     name: "Wallets -> List",
     value: async () => {
+      await db.read();
       drawBitcoinTable(db.data.wallets);
       cli.homescreen();
     },

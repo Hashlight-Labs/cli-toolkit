@@ -30,17 +30,44 @@ export const mnemonicToPrivateKey = (
   return privateKey;
 };
 
+export const privateKeyToKeypair = ({
+  privateKey,
+  network = bitcoinjs.networks.bitcoin,
+}: {
+  privateKey: string;
+  network?: bitcoinjs.Network;
+}) => {
+  const isHex = /^[0-9A-Fa-f]{64}$/.test(privateKey);
+  const keypair = isHex
+    ? ECPair.fromPrivateKey(Buffer.from(privateKey, "hex"))
+    : ECPair.fromWIF(privateKey, network);
+
+  return keypair;
+};
+
 export const privateKeyToAddress = (
   privateKey: string,
   network = bitcoinjs.networks.bitcoin
 ) => {
-  const keypair = ECPair.fromPrivateKey(Buffer.from(privateKey, "hex"));
+  const keypair = privateKeyToKeypair({ privateKey, network });
+
   const { address } = bitcoinjs.payments.p2tr({
     internalPubkey: keypair.publicKey.subarray(1, 33),
     network,
   });
 
   return address;
+};
+
+export const getBitcoinKeypair = (wallet: Db.Wallet) => {
+  if (wallet.privateKeyOverrides?.bitcoin) {
+    return privateKeyToKeypair({
+      privateKey: wallet.privateKeyOverrides.bitcoin,
+    });
+  }
+
+  const privateKey = mnemonicToPrivateKey(wallet.mnemonic);
+  return privateKeyToKeypair({ privateKey });
 };
 
 export const satsToBtc = (sats: number) => sats / 1e8;

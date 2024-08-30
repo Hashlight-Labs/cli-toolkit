@@ -26,6 +26,7 @@ export namespace Db {
     id: string;
     mnemonic: string;
     addresses: Record<AddressType, string>;
+    privateKeyOverrides?: Record<AddressType, string>;
     balances?: Record<Network, number>;
     proxy?: string;
     moduleCache?: ModuleData;

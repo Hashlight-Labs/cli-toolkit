@@ -1,5 +1,5 @@
 import { getShortString } from "@/helpers/utils";
-import { Db } from "@/lib/db";
+import { db, Db } from "@/lib/db";
 import { createChildLogger } from "@/lib/logger";
 import { FractalApi } from "@/modules/fractal/api";
 import { sendBtc } from "@/modules/fractal/bitcoin";

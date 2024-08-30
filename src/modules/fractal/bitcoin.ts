@@ -1,19 +1,7 @@
-import {
-  ecc,
-  ECPair,
-  mnemonicToPrivateKey,
-  tweakSigner,
-} from "@/helpers/bitcoin";
+import { getBitcoinKeypair, tweakSigner } from "@/helpers/bitcoin";
 import { Db } from "@/lib/db";
 import { FractalApi } from "@/modules/fractal/api";
-import {
-  networks,
-  payments,
-  Psbt,
-  crypto,
-  Signer,
-  Transaction,
-} from "bitcoinjs-lib";
+import { networks, payments, Psbt } from "bitcoinjs-lib";
 import _ from "lodash";
 
 export const sendBtc = async (
@@ -22,8 +10,7 @@ export const sendBtc = async (
   amount: number,
   minerFee: number
 ) => {
-  const privateKey = mnemonicToPrivateKey(wallet.mnemonic);
-  const keypair = ECPair.fromPrivateKey(Buffer.from(privateKey, "hex"));
+  const keypair = getBitcoinKeypair(wallet);
   const { address, output } = payments.p2tr({
     internalPubkey: keypair.publicKey.subarray(1, 33),
     network: networks.bitcoin,
