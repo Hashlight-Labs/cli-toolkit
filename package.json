@@ -2,7 +2,9 @@
   "private": true,
   "scripts": {
     "start": "tsx index.ts",
-    "dev": "nodemon index.ts"
+    "dev": "nodemon index.ts",
+    "update": "git pull && yarn",
+    "update:force": "git stash -u && git pull && yarn"
   },
   "type": "module",
   "dependencies": {
@@ -33,12 +35,14 @@
     "lowdb": "^7.0.1",
     "node-fetch": "^3.3.2",
     "nodemon": "^3.1.4",
+    "ora": "^8.1.0",
     "playwright": "^1.46.1",
     "playwright-extra": "^4.3.6",
     "proxy-chain": "^2.5.3",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
     "qs": "^6.12.1",
     "request": "^2.88.2",
+    "simple-git": "^3.26.0",
     "tiny-secp256k1": "^2.2.3",
     "ts-node": "^10.9.2",
     "tsx": "^4.17.0",

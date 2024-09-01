@@ -45,5 +45,3 @@ export const cli = {
       ],
     }).then((fn) => fn()),
 };
-
-cli.homescreen();

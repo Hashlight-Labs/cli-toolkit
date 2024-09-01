@@ -8,7 +8,7 @@
  *
  * █░█ ▄▀█ █▀ █░█ █░░ █ █▀▀ █░█ ▀█▀
  * █▀█ █▀█ ▄█ █▀█ █▄▄ █ █▄█ █▀█ ░█░
- *      Made with ♥ from Morphelay
+ *         Made with ♥ by Morphelay
  *
  * @discord https://discord.gg/tKbHweDkeY
  * @twitter https://twitter.com/hashlight
