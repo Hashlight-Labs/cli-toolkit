@@ -1,4 +1,5 @@
 import { getShortString } from "@/helpers/utils";
+import { ProgramError, ProgramErrorFlag } from "@/lib/classes/ProgramError";
 import { db, Db } from "@/lib/db";
 import { createChildLogger } from "@/lib/logger";
 import { FractalApi } from "@/modules/fractal/api";
@@ -33,8 +34,9 @@ export const mintFractal = async ({
     Number(brc20Data.data.minted);
 
   if (!canMint)
-    throw new Error(
-      `Reached limit for mint ${ticker}: ${brc20Data.data.minted}/${brc20Data.data.max} minted. Remove it from your config to hide this error.`
+    throw new ProgramError(
+      `Reached limit for mint ${ticker}: ${brc20Data.data.minted}/${brc20Data.data.max} minted. Remove it from your config to hide this error.`,
+      ProgramErrorFlag.DO_NOT_RETRY
     );
 
   const feeRate = await FractalApi.getFeeRate();

@@ -1,3 +1,4 @@
+import { ProgramError, ProgramErrorFlag } from "@/lib/classes/ProgramError";
 import { logger } from "@/lib/logger";
 import _ from "lodash";
 
@@ -18,16 +19,16 @@ export const retry = async <T>(
 ): Promise<T> => {
   try {
     return await fn(retriesLeft);
-  } catch (error) {
-    if (retriesLeft) {
-      logger.debug(
-        `Retries left: ${retriesLeft} ${id ? `(${id})` : ""}}. Delay: ${delay}`,
-        error
-      );
-      await sleep(delay);
-      return retry(fn, retriesLeft - 1, delay * multiplier, id, multiplier);
-    }
-    throw error;
+  } catch (error: any | ProgramError) {
+    if (error instanceof ProgramError && !error.shouldRetry) throw error;
+    if (!retriesLeft) throw error;
+
+    logger.debug(
+      `Retries left: ${retriesLeft}${id ? ` (${id})` : ""}. Delay: ${delay}.`,
+      error
+    );
+    await sleep(delay);
+    return retry(fn, retriesLeft - 1, delay * multiplier, id, multiplier);
   }
 };
 
