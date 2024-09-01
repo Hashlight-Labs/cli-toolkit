@@ -38,15 +38,31 @@ export const mintFractal = async ({
     );
 
   const feeRate = await FractalApi.getFeeRate();
-  const mint = await FractalApi.createBrc20Mint({
-    receiveAddress: wallet.addresses.bitcoin,
-    feeRate: feeRate.fastestFee,
-    brc20Amount: String(brc20Data.data.limit),
-    brc20Ticker: ticker,
-    count,
+
+  if (!wallet.proxy) throw new Error(`Proxy is required for inscription`);
+
+  const mintFileName = JSON.stringify({
+    p: "brc-20",
+    op: "mint",
+    tick: ticker,
+    amt: String(brc20Data.data.limit),
   });
 
-  logger.debug({ mintinfo: mint });
+  const mintFile = {
+    dataURL: `data:text/plain;charset=utf-8;base64,${Buffer.from(
+      mintFileName
+    ).toString("base64")}`,
+    filename: mintFileName,
+  };
+
+  const mint = await FractalApi.createInscribeOrderV5({
+    receiveAddress: wallet.addresses.bitcoin,
+    feeRate: feeRate.fastestFee,
+    files: Array(count).fill(mintFile),
+    proxy: wallet.proxy,
+  });
+
+  logger.debug({ mintinfo: mint, mintFile });
 
   if (!("data" in mint))
     throw new Error(`No mint data found for ticker ${ticker}: ${mint.msg}`);

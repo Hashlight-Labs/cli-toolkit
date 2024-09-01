@@ -6,11 +6,27 @@ import { FRACTAL_API_BASE_URL as BASE_URL } from "@/modules/fractal/const";
 import { type FractalApi as TFractalApi } from "@/modules/fractal/types";
 import { HttpsProxyAgent } from "https-proxy-agent";
 import fetch from "node-fetch";
+import crypto from "crypto";
 
 const defaultHeaders = {
   accept: "application/json",
   "content-type": "application/json",
   Authorization: `Bearer ${UNISAT_FRACTAL_API_TOKEN}`,
+};
+
+export const getUnisatHeaders = (dataRaw: string, path: string) => {
+  const time = Math.floor(Date.now() / 1e3).toString();
+  const strToSign = `${path}\n${dataRaw}\n${time}@#?.#@deda5ddd2b3d84988b2cb0a207c4674e`;
+  const appid = "1adcd7969603261753f1812c9461cd36";
+
+  const sign = crypto.createHash("md5").update(strToSign).digest("hex");
+  const cf = ""
+    .concat(Math.random().toString(36).slice(-6))
+    .concat(sign.substring(12, 14))
+    .concat(Math.random().toString(36).slice(-8), "u")
+    .concat(Math.random().toString(36).slice(-8));
+
+  return { appid, cf, sign, time };
 };
 
 export const FractalApi = {
@@ -97,6 +113,51 @@ export const FractalApi = {
     }).then((res) => res.json() as Promise<TFractalApi.Response<string>>);
   },
 
+  createInscribeOrderV5({
+    receiveAddress,
+    feeRate,
+    files,
+    proxy,
+  }: {
+    receiveAddress: string;
+    feeRate: number;
+    files: { dataURL: string; filename: string }[];
+    proxy: string;
+  }) {
+    const body = JSON.stringify({
+      files,
+      receiver: receiveAddress,
+      feeRate,
+      outputValue: 546,
+      clientId: Math.random().toString(36).substring(7),
+    });
+
+    const path = "/inscribe-v5/order/create";
+    const headers = getUnisatHeaders(body, path);
+
+    return fetch(`https://fractal-api-testnet.unisat.io${path}`, {
+      headers: {
+        accept: "application/json, text/plain, */*",
+        "accept-language": "en-US,en;q=0.9",
+        "content-type": "application/json",
+        "cache-control": "no-cache",
+        "cf-token": headers.cf,
+        "x-appid": headers.appid,
+        "x-sign": headers.sign,
+        "x-ts": headers.time,
+        "user-agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+      },
+      referrer: "https://fractal-testnet.unisat.io/",
+      body,
+      method: "POST",
+      agent: new HttpsProxyAgent(proxyStringToUri(proxy)),
+    }).then(
+      (res) =>
+        res.json() as Promise<TFractalApi.Response<TFractalApi.OrderData>>
+    );
+  },
+
   createBrc20Mint({
     receiveAddress,
     feeRate,
@@ -127,34 +188,27 @@ export const FractalApi = {
     );
   },
 
-  /**
-   * @todo implement custom when needed
-   */
-  __not_implemented_createInscribeOrder({
+  createInscribeOrder({
     receiveAddress,
     feeRate,
+    files,
   }: {
     receiveAddress: string;
     feeRate: number;
+    files: { dataURL: string; filename: string }[];
   }) {
     return fetch(`${BASE_URL}/v2/inscribe/order/create`, {
       method: "POST",
       headers: defaultHeaders,
       body: JSON.stringify({
-        receiveAddress: receiveAddress,
-        feeRate: feeRate,
+        receiveAddress,
+        feeRate,
         outputValue: 546,
-        files: [
-          {
-            filename: "1000.sats",
-            dataURL:
-              "data:text/plain;charset=utf-8;base64,eyJwIjoic25zIiwib3AiOiJyZWciLCJuYW1lIjoiMTAwMDAuc2F0cyJ9",
-          },
-        ],
+        files,
       }),
     }).then(
       (res) =>
-        res.json() as Promise<TFractalApi.Response<TFractalApi.BalanceData>>
+        res.json() as Promise<TFractalApi.Response<TFractalApi.OrderData>>
     );
   },
 };
