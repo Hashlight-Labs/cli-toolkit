@@ -39,7 +39,7 @@ export const mintFractal = async ({
       ProgramErrorFlag.DO_NOT_RETRY
     );
 
-  const feeRate = await FractalApi.getFeeRate();
+  const feeRate = await FractalApi.getFeeRate(wallet.proxy);
 
   if (!wallet.proxy) throw new Error(`Proxy is required for inscription`);
 

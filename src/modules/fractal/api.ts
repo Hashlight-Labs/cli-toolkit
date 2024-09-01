@@ -70,11 +70,12 @@ export const FractalApi = {
     );
   },
 
-  getFeeRate() {
+  getFeeRate(proxy?: string) {
     return fetch(
       `https://mempool-testnet.fractalbitcoin.io/api/v1/fees/recommended`,
       {
         headers: defaultHeaders,
+        agent: proxy ? new HttpsProxyAgent(proxyStringToUri(proxy)) : undefined,
       }
     ).then((res) => res.json() as Promise<TFractalApi.FeeRate>);
   },

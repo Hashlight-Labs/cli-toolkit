@@ -14,6 +14,7 @@ import {
   retry,
   shuffle,
   sleep,
+  waitForValue,
 } from "@/helpers/utils";
 import { getDelays } from "@/helpers/inquirer";
 import { mintFractal } from "@/modules/fractal/methods/inscribe";
@@ -21,6 +22,8 @@ import { GLOBAL_CONFIG } from "@/config";
 import { drawFractalMintConfig } from "@/stats/fractalMintConfig";
 import chalk from "chalk";
 import { satsToBtc } from "@/helpers/bitcoin";
+import { FractalApi } from "@/modules/fractal/api";
+import { waitForFractalFee } from "@/modules/fractal/utils";
 
 export const fractalCli: Choice<CliMethod>[] = [
   {
@@ -90,10 +93,22 @@ export const fractalCli: Choice<CliMethod>[] = [
       const wallets = await checkbox({
         message: "Select wallets",
         pageSize: 20,
-        choices: db.data.wallets.map((wallet, i) => ({
-          name: `[${i + 1}] ${getShortString(wallet.addresses.bitcoin)}`,
-          value: wallet,
-        })),
+        choices: db.data.wallets.map((wallet, i) => {
+          const balanceMsg = wallet.balances?.[Db.Network.FractalTestnet]
+            ? chalk.yellow(
+                ` ${satsToBtc(
+                  wallet.balances?.[Db.Network.FractalTestnet]
+                )} tFB `
+              )
+            : "";
+
+          return {
+            name: `[${i + 1}] ${getShortString(
+              wallet.addresses.bitcoin
+            )}${balanceMsg}`,
+            value: wallet,
+          };
+        }),
       });
 
       const { min: minDelay, max: maxDelay } = await getDelays();
@@ -106,6 +121,12 @@ export const fractalCli: Choice<CliMethod>[] = [
       logger.info("Select delay between transactions and wallets:");
       logger.info(`Minting Fractal BRC20 for ${wallets.length} wallets`);
 
+      GLOBAL_CONFIG.fractal.maxFee &&
+        (await waitForFractalFee(
+          GLOBAL_CONFIG.fractal.maxFee,
+          wallets[0]?.proxy
+        ));
+
       await Promise.all(
         shuffle(wallets).map(async (wallet, i) => {
           await sleep(
@@ -114,6 +135,12 @@ export const fractalCli: Choice<CliMethod>[] = [
               wallet.addresses.bitcoin
             )} will start minting in {}`
           );
+
+          GLOBAL_CONFIG.fractal.maxFee &&
+            (await waitForFractalFee(
+              GLOBAL_CONFIG.fractal.maxFee,
+              wallet?.proxy
+            ));
 
           await eachOfSeries(
             shuffle(GLOBAL_CONFIG.fractal.mint),

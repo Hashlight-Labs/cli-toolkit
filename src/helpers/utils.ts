@@ -53,3 +53,34 @@ export const getDelaySet = (
     arr[i] = newDelay;
     return newDelay;
   });
+
+/**
+ * Retry function until it succeeds or runs out of retries
+ */
+export const waitForValue = async <R>(
+  fn: () => R | Promise<R>,
+  verify: (value: R) => boolean,
+  delay = 10000,
+  { firstMessage = "", successMessage = "" } = {}
+): Promise<void> => {
+  const check = async (attempt = 0) => {
+    const value = await fn();
+
+    logger.debug("Waiting for value", {
+      value,
+    });
+
+    if (verify(value)) {
+      if (successMessage && attempt > 0) logger.info(successMessage);
+      return;
+    }
+
+    if (attempt === 0 && firstMessage) logger.info(firstMessage);
+
+    await sleep(delay);
+
+    return check(attempt + 1);
+  };
+
+  return check();
+};
