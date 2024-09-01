@@ -13,9 +13,9 @@ UNISAT_FRACTAL_API_TOKEN=...
 ```
 Получить `UNISAT_FRACTAL_API_TOKEN` можно на [платформе разработчиков Unisat](https://developer.unisat.io/account/login), а `2CAPTCHA_API_KEY` в дешборде [2captcha](https://2captcha.com/enterpage) после регистрации.
 
-> 2captcha и прокси нужны для клейма токенов Fractal Testnet. Они не нужны для других модулей.
+> 2captcha нужны для клейма токенов Fractal Testnet. Они не нужны для других модулей.
 
-4. Обновить `src/config.ts` с твоей конфигурацией кошельков.
+1. Обновить `src/config.ts` с твоей конфигурацией кошельков.
 ```ts
 // Этот конфиг будет мнтить 1-2 NFT для каждого тикера в случайном порядке для каждого выбранного кошелька
 export const GLOBAL_CONFIG = {
@@ -33,9 +33,9 @@ export const GLOBAL_CONFIG = {
   },
 };
 ```
-5. `yarn start` чтобы запустить CLI.
-6. Сгенерировать кошельки в меню `Wallets -> Generate`
-7. Добавить прокси в меню `Wallets -> Proxy`. Для этого нужно будет создать файл `proxy.txt` с прокси в формате `ip:port:user:pass`
-8. В разделе `Fractal -> Claim testnet tokens` запускается клейм токенов. Можно клеймить раз в 6 часов на один и тот же кошелек или прокси (с нескольких прокси на один кошелек сразу не получится).
-9. В разделе `Fractal -> Mint testnet BRC20 tokens` можно запустить минт BRC-20. Конфиг будет взят из `src/config.ts`
+1. `yarn start` чтобы запустить CLI.
+2. Сгенерировать кошельки в меню `Wallets -> Generate`
+3. Добавить прокси в меню `Wallets -> Proxy`. Для этого нужно будет создать файл `proxy.txt` с прокси в формате `ip:port:user:pass`
+4. В разделе `Fractal -> Claim testnet tokens` запускается клейм токенов. Можно клеймить раз в 6 часов на один и тот же кошелек или прокси (с нескольких прокси на один кошелек сразу не получится).
+5. В разделе `Fractal -> Mint testnet BRC20 tokens` можно запустить минт BRC-20. Конфиг будет взят из `src/config.ts`
 
