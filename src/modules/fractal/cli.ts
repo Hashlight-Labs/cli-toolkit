@@ -67,7 +67,7 @@ export const fractalCli: Choice<CliMethod>[] = [
         `Claiming fractal testnet tokens for ${wallets.length} wallets`
       );
 
-      await eachOfSeries(shuffle(wallets), async (wallet) => {
+      await eachOfSeries(wallets, async (wallet) => {
         await retry(() => claimFractal(wallet), 1).catch((e) => {
           logger.error(
             `Could not claim fractal for ${getShortString(
@@ -128,49 +128,58 @@ export const fractalCli: Choice<CliMethod>[] = [
         ));
 
       await Promise.all(
-        shuffle(wallets).map(async (wallet, i) => {
-          await sleep(
-            delaySet[i],
-            `${getShortString(
-              wallet.addresses.bitcoin
-            )} will start minting in {}`
-          );
+        wallets.map(async (wallet, i) => {
+          try {
+            await sleep(
+              delaySet[i],
+              `${getShortString(
+                wallet.addresses.bitcoin
+              )} will start minting in {}`
+            );
 
-          GLOBAL_CONFIG.fractal.maxFee &&
-            (await waitForFractalFee(
-              GLOBAL_CONFIG.fractal.maxFee,
-              wallet?.proxy
-            ));
+            GLOBAL_CONFIG.fractal.maxFee &&
+              (await waitForFractalFee(
+                GLOBAL_CONFIG.fractal.maxFee,
+                wallet?.proxy
+              ));
 
-          await eachOfSeries(
-            shuffle(GLOBAL_CONFIG.fractal.mint),
-            async (mint) => {
-              await retry(
-                () =>
-                  mintFractal({
-                    wallet,
-                    count: getRandomNumberBetween(
-                      mint.repeat[0],
-                      mint.repeat[1]
-                    ),
-                    ticker: mint.tick,
-                  }),
-                3
-              ).catch((e) => {
-                logger.error(
-                  `Could not mint BRC for ${getShortString(
-                    wallet.addresses.bitcoin
-                  )}`,
-                  e
+            await eachOfSeries(
+              shuffle(GLOBAL_CONFIG.fractal.mint),
+              async (mint) => {
+                await retry(
+                  () =>
+                    mintFractal({
+                      wallet,
+                      count: getRandomNumberBetween(
+                        mint.repeat[0],
+                        mint.repeat[1]
+                      ),
+                      ticker: mint.tick,
+                    }),
+                  3
+                ).catch((e) => {
+                  logger.error(
+                    `Could not mint BRC for ${getShortString(
+                      wallet.addresses.bitcoin
+                    )}`,
+                    e
+                  );
+                });
+
+                await sleep(
+                  getRandomNumberBetween(minDelay * 1000, maxDelay * 1000),
+                  `${getShortString(wallet.addresses.bitcoin)} sleeping for {}`
                 );
-              });
-
-              await sleep(
-                getRandomNumberBetween(minDelay * 1000, maxDelay * 1000),
-                `${getShortString(wallet.addresses.bitcoin)} skeeping for {}`
-              );
-            }
-          );
+              }
+            );
+          } catch (e) {
+            logger.error(
+              `Could not mint BRC for ${getShortString(
+                wallet.addresses.bitcoin
+              )}`,
+              e
+            );
+          }
         })
       );
 
