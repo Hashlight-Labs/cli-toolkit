@@ -1,9 +1,8 @@
 import { satsToBtc } from "@/helpers/bitcoin";
-import { getShortString, waitForValue } from "@/helpers/utils";
+import { getShortString, retry, waitForValue } from "@/helpers/utils";
 import { db, Db, saveWallet } from "@/lib/db";
 import { logger } from "@/lib/logger";
 import { FractalApi } from "@/modules/fractal/api";
-import { retry } from "async";
 import _ from "lodash";
 
 export const syncFractalBalance = async (wallet: Db.Wallet) => {
