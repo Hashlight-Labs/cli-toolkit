@@ -1,4 +1,5 @@
 import { getBitcoinKeypair, tweakSigner } from "@/helpers/bitcoin";
+import { ProgramError, ProgramErrorFlag } from "@/lib/classes/ProgramError";
 import { Db } from "@/lib/db";
 import { FractalApi } from "@/modules/fractal/api";
 import { networks, payments, Psbt } from "bitcoinjs-lib";
@@ -29,7 +30,10 @@ export const sendBtc = async (
   const lowestUtxo = _.minBy(filteredUtxos, "satoshi");
 
   if (!lowestUtxo)
-    throw new Error(`Not enough utxo. Required ${feePlusAmount} satoshi`);
+    throw new ProgramError(
+      `Not enough utxo. Required ${feePlusAmount} satoshi`,
+      ProgramErrorFlag.DO_NOT_RETRY
+    );
 
   const psbt = new Psbt({ network: networks.bitcoin });
   const change = lowestUtxo.satoshi - feePlusAmount;
