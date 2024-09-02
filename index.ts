@@ -18,3 +18,9 @@ spinner.start();
 await checkIfRepoIsUpToDate(() => spinner.stop());
 
 cli.homescreen();
+
+// listen for ctrl c to exit
+process.on("SIGINT", async () => {
+  console.log(`\n${chalk.green("Bye!")}`);
+  process.exit();
+});
