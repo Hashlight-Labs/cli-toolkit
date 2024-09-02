@@ -3,6 +3,7 @@ import { getShortString, waitForValue } from "@/helpers/utils";
 import { db, Db, saveWallet } from "@/lib/db";
 import { logger } from "@/lib/logger";
 import { FractalApi } from "@/modules/fractal/api";
+import { retry } from "async";
 import _ from "lodash";
 
 export const syncFractalBalance = async (wallet: Db.Wallet) => {
@@ -29,7 +30,7 @@ export const syncFractalBalance = async (wallet: Db.Wallet) => {
 
 export const waitForFractalFee = (maxFee: number, proxy?: string) =>
   waitForValue(
-    () => FractalApi.getFeeRate(proxy),
+    () => retry(() => FractalApi.getFeeRate(proxy)),
     (feeRate) => feeRate.fastestFee < maxFee,
     10000,
     {
