@@ -28,7 +28,8 @@ export const sendBtc = async (
   const filteredUtxos = utxos.filter((utxo) => utxo.satoshi > feePlusAmount);
   const lowestUtxo = _.minBy(filteredUtxos, "satoshi");
 
-  if (!lowestUtxo) throw new Error("Not enough utxo");
+  if (!lowestUtxo)
+    throw new Error(`Not enough utxo. Required ${feePlusAmount} satoshi`);
 
   const psbt = new Psbt({ network: networks.bitcoin });
   const change = lowestUtxo.satoshi - feePlusAmount;
