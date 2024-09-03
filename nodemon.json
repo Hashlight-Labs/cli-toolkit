@@ -1,4 +1,5 @@
 {
+  "stdin": false,
   "verbose": false,
   "watch": [
     "./**/*.*",
@@ -7,6 +8,8 @@
   "ignore": [
     "node_modules/*",
     "test/*",
+    "db.json",
+    "db.*.json",
     "*.log"
   ],
   "ext": "js,ts,json",

@@ -2,7 +2,6 @@ import { Db, db } from "@/lib/db";
 import { cli } from "../../cli";
 import { CliMethod } from "../../types/cli";
 import { Choice } from "../../types/inquirer";
-import { checkbox } from "@inquirer/prompts";
 import { eachOfSeries } from "async";
 import { claimFractal } from "@/modules/fractal/methods/claim";
 import { logger } from "@/lib/logger";
@@ -24,6 +23,44 @@ import chalk from "chalk";
 import { satsToBtc } from "@/helpers/bitcoin";
 import { FractalApi } from "@/modules/fractal/api";
 import { waitForFractalFee } from "@/modules/fractal/utils";
+import checkbox from "@/lib/inquirer/checkbox";
+import { Wallet } from "ethers";
+
+enum WalletFlags {
+  Empty = "e",
+  Funded = "f",
+  Claimable = "c",
+}
+
+const flags = [
+  {
+    key: WalletFlags.Empty,
+    description: "for empty wallets",
+  },
+  {
+    key: WalletFlags.Funded,
+    description: "for funded wallets",
+  },
+  {
+    key: WalletFlags.Claimable,
+    description: "for claimable wallets",
+  },
+];
+
+const getWalletFlags = (wallet: Db.Wallet) => {
+  const flags: WalletFlags[] = [];
+
+  flags.push(
+    wallet.balances?.[Db.Network.FractalTestnet]
+      ? WalletFlags.Funded
+      : WalletFlags.Empty
+  );
+
+  if ((wallet.moduleCache?.fractal?.nextClaim || 0) < Date.now())
+    flags.push(WalletFlags.Claimable);
+
+  return flags;
+};
 
 export const fractalCli: Choice<CliMethod>[] = [
   {
@@ -34,6 +71,7 @@ export const fractalCli: Choice<CliMethod>[] = [
       const wallets = await checkbox({
         message: "Select wallets",
         pageSize: 20,
+        flags,
         choices: db.data.wallets.map((wallet, i) => {
           const nextClaimMsg =
             (wallet.moduleCache?.fractal?.nextClaim || 0) > Date.now()
@@ -57,6 +95,7 @@ export const fractalCli: Choice<CliMethod>[] = [
               wallet.addresses.bitcoin
             )}${balanceMsg}${nextClaimMsg}`,
             value: wallet,
+            flags: getWalletFlags(wallet),
           };
         }),
       });
@@ -93,6 +132,7 @@ export const fractalCli: Choice<CliMethod>[] = [
       const wallets = await checkbox({
         message: "Select wallets",
         pageSize: 20,
+        flags,
         choices: db.data.wallets.map((wallet, i) => {
           const balanceMsg = wallet.balances?.[Db.Network.FractalTestnet]
             ? chalk.yellow(
@@ -107,6 +147,7 @@ export const fractalCli: Choice<CliMethod>[] = [
               wallet.addresses.bitcoin
             )}${balanceMsg}`,
             value: wallet,
+            flags: getWalletFlags(wallet),
           };
         }),
       });
