@@ -11,7 +11,7 @@
 2CAPTCHA_API_KEY=... 
 UNISAT_FRACTAL_API_TOKEN=...
 ```
-You can obtain `UNISAT_FRACTAL_API_TOKEN` from [developer dashboard](https://developer.unisat.io/account/login) and `2CAPTCHA_API_KEY` from [2captcha](https://2captcha.com/enterpage).
+You can obtain `UNISAT_FRACTAL_API_TOKEN` from [developer dashboard](https://developer.unisat.io/dashboard/fractal/testnet) (make sure fractal testnet is selected in the menu on the left) and `2CAPTCHA_API_KEY` from [2captcha](https://2captcha.com/enterpage).
 
 > 2captcha is required to solve captchas for the Fractal Testnet claim module. It's not required for other modules.
 4. Update `src/config.ts` with your wallet configuration.
@@ -34,6 +34,6 @@ export const GLOBAL_CONFIG = {
 ```
 5. `yarn start` to run the CLI toolkit.
 6. Generate wallets in `Wallets -> Generate` menu.
-7. Attach your proxies to wallets in `Wallets -> Proxy` menu. It requires to create `proxy.txt` file with proxies in format `ip:port:user:pass`
+7. Attach your proxies to wallets in `Wallets -> Proxy` menu. It requires to create `proxy.txt` file with proxies in format `ip:port:user:pass`. **Unique proxies are required for each wallet for this module.**
 8. Go to `Fractal -> Claim testnet tokens` menu to claim the Fractal Testnet tokens. You can select wallets and delay between claims.
 9. Go to `Fractal -> Mint testnet BRC20 tokens` menu to mint BRC-20 tokens. You can select wallets and delay between mints.

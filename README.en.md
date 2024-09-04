@@ -17,7 +17,7 @@ This is a CLI toolkit for different kinds of blockchain automation. You can run 
 
 ## Requirements
 1. Git to clone this repository with `git clone https://github.com/Hashlight-Labs/cli-toolkit`
-2. Node.js >=18.17.1, install with [guide](https://nodejs.org/en/download/package-manager)
+2. Node.js >=18.17.1, download and install from [official wensite](https://nodejs.org/en/download/prebuilt-installer)
 3. yarn >=1.22.19, install with `npm install --global yarn`
 4. playwright >=1.46.1, install with `npx playwright install` (might require to install some system dependencies, follow the guide)
 5. Npm packages, install with `yarn install`

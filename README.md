@@ -17,7 +17,7 @@
 
 ## Требования
 1. git для клонирования данного репозитория через `git clone https://github.com/Hashlight-Labs/cli-toolkit`
-2. Node.js >=18.17.1, установка по [гайду](https://nodejs.org/en/download/package-manager)
+2. Node.js >=20.x.x, скачать и установить можно [на официальном сайте](https://nodejs.org/en/download/prebuilt-installer)
 3. yarn >=1.22.19, установка через `npm install --global yarn`
 4. playwright >=1.46.1, установка через `npx playwright install` (может потребовать установки системных зависимостей, следуйте подсказкам)
 5. Зависимости проекта, установка через `yarn install`
