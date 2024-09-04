@@ -107,7 +107,9 @@ export class FractalBrowserAgent {
         }, 900000);
       });
 
-      await this.page?.reload({ waitUntil: "load" });
+      await this.page
+        ?.reload({ waitUntil: "load", timeout: 90000 })
+        .catch(reject);
     });
   }
 
