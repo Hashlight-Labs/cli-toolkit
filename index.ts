@@ -3,9 +3,9 @@ import { cli } from "./src/cli";
 import { checkIfRepoIsUpToDate } from "@/lib/checkUpdates";
 import chalk from "chalk";
 import ora from "ora";
-import { sleep } from "@/helpers/utils";
-import { log } from "console";
-import checkbox from "@/lib/inquirer/checkbox";
+import { DB_FILE } from "@/lib/env";
+import { logger } from "@/lib/logger";
+import { db } from "@/lib/db";
 config();
 
 // listen for ctrl c to exit
@@ -20,6 +20,12 @@ console.log(`${chalk.yellow(`
   ${chalk.gray(
     `Made with ${chalk.red("♥")} by ${chalk.blue("https://t.me/morphelay")}`
   )}\n`);
+
+logger.info(
+  `You're using ${chalk.green(DB_FILE)} database wich has ${chalk.green(
+    `${db.data.wallets.length} wallets`
+  )}`
+);
 
 const spinner = ora("Checking updates");
 spinner.start();
